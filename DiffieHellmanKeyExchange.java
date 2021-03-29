@@ -1,5 +1,8 @@
 import java.math.BigInteger;
 import java.util.HashSet;
+import java.util.Scanner;
+
+import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
 public class DiffieHellmanKeyExchange {
 
 
@@ -7,8 +10,8 @@ public class DiffieHellmanKeyExchange {
 Choose a prime number p and a base g that is a primitive root modulo p (see below).
 
 Choose numbers:
-Prime number 93
-Prim root 17
+Prime number p = 97
+Prim root g = 17
 
 Calculate:
 These numbers could be determined by shouting across a room for all we care
@@ -25,5 +28,37 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
 Finding g requires some math, and is not necessarily trivial.  I've put together the following code that may help you in your implementation
 */
 
+    public static boolean isPrime(int p)
+    {
+        for (int i = 2; i <= p / 2; ++i) 
+        {
+        // condition for nonprime number
+            if (p % i == 0) 
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    public static void main(String[]args)
+    {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter a prime number (p): ") ;
+        int p = scan.nextInt() ;
+    
+        if(isPrime(p))
+        {
+            System.out.print(p);
+            System.out.println(" Is Prime") ;
+        }
+        else
+        {
+            System.out.print(p);
+            System.out.println(" Is not Prime") ;
+        }
+
+    }
 }
+
