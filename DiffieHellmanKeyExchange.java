@@ -1,5 +1,5 @@
 import java.math.BigInteger;
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Random ;
 
@@ -31,7 +31,7 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
 
     public static boolean isPrime(int p)
     {
-        for (int i = 2; i <= p / 2; ++i) 
+        for (int i = 2; i <= p/2; ++i) 
         {
         // condition for nonprime number
             if (p % i == 0) 
@@ -52,7 +52,7 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
 
 
         //Give a constant for this, keep code for custom number commented out
-        int g = 17 ;
+        BigInteger g = BigInteger.valueOf(17) ;
         
         //System.out.print("Enter a primitive root: ") ;
         //int g = scan.nextInt() ;
@@ -80,10 +80,12 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
         if(a==0)
         {
             a = rand.nextInt(1000) ; //Change 1000 value to edit bounds
+            System.out.println("a = " + a) ;
         }
         if(b==0)
         {
             b = rand.nextInt(1000) ;
+            System.out.println("b = " + b) ;
         }
         scan.close() ; //Close scanner
 
@@ -94,9 +96,15 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
 
 
         //Make A or B a big integer value of the long value of the double value of g^(a or b) % p
-        BigInteger A = BigInteger.valueOf(Double.valueOf((Math.pow(g, a))%p).longValue()) ;
-        BigInteger B = BigInteger.valueOf(Double.valueOf((Math.pow(g, b))%p).longValue()) ;
+        BigInteger aCalcs = BigInteger.valueOf(a) ;
+        BigInteger bCalcs = BigInteger.valueOf(b) ;
+        BigInteger pCalcs = BigInteger.valueOf(p) ;
 
+        BigInteger A = g.modPow(aCalcs, pCalcs) ;
+        BigInteger B = g.modPow(bCalcs, pCalcs) ;
+
+        System.out.println(A) ;
+        System.out.println(B) ;
 }
 }
 
