@@ -72,7 +72,7 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
         
 
         //Take a and b input, if they enter 0 use rng from earlier.
-        System.out.print("Enter your \"a\" secret value (Enter 0 to randomize): ");
+        System.out.print("\nEnter your \"a\" secret value (Enter 0 to randomize): ");
         int a = scan.nextInt() ;
         System.out.print("\nEnter your \"b\" secret value (Enter 0 to randomize): ");
         int b = scan.nextInt() ;
@@ -80,12 +80,12 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
         if(a==0)
         {
             a = rand.nextInt(1000) ; //Change 1000 value to edit bounds
-            System.out.println("a = " + a) ;
+            System.out.println("\n(Secret) a = " + a) ;
         }
         if(b==0)
         {
             b = rand.nextInt(1000) ;
-            System.out.println("b = " + b) ;
+            System.out.println("\n(Secret) b = " + b) ;
         }
         scan.close() ; //Close scanner
 
@@ -95,7 +95,7 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
         //Bob chooses a secret integer b (probably randomly), computes B=(g^b)%p, and sends B to Alice
 
 
-        //Make A or B a big integer value of the long value of the double value of g^(a or b) % p
+        //Make variables bigIntegers for calculations
         BigInteger aCalcs = BigInteger.valueOf(a) ;
         BigInteger bCalcs = BigInteger.valueOf(b) ;
         BigInteger pCalcs = BigInteger.valueOf(p) ;
@@ -103,8 +103,27 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
         BigInteger A = g.modPow(aCalcs, pCalcs) ;
         BigInteger B = g.modPow(bCalcs, pCalcs) ;
 
-        System.out.println(A) ;
-        System.out.println(B) ;
+        System.out.println("\n\nAlice: *Shouting* Hey I calculated " + A + " for A") ;
+        System.out.println("Bob: *Shouting* Yo I calculated " + B + " for B") ;
+
+
+
+        //Repeat Verification instructions
+        //Alice computes key=(B^a)%p
+        //Bob computes key=(A^b)%p
+
+        BigInteger verB = B.modPow(aCalcs, pCalcs) ; //Alice is verifying Bob's thing
+        BigInteger verA = A.modPow(bCalcs, pCalcs) ; //Bob is verifying Alice's thing
+
+        System.out.println("\n\nAlice: B verified is " + verB) ;
+        System.out.println("Bob: A verified is " + verA) ;
+
+
+        if(verB == verA) //If they are they same we're good!
+        {
+            System.out.println("\n" + verA + " = " + verB + " so we're good!") ;
+        }
+
 }
 }
 
