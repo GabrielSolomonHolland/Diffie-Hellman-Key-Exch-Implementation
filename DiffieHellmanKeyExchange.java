@@ -1,8 +1,9 @@
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Random ;
 
-import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
+//import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
 public class DiffieHellmanKeyExchange {
 
 
@@ -43,22 +44,59 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
 
     public static void main(String[]args)
     {
-        Scanner scan = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in); //make scanner
+        Random rand = new Random() ; //make RNG
 
         System.out.print("Enter a prime number (p): ") ;
         int p = scan.nextInt() ;
+
+
+        //Give a constant for this, keep code for custom number commented out
+        int g = 17 ;
+        
+        //System.out.print("Enter a primitive root: ") ;
+        //int g = scan.nextInt() ;
+        
     
-        if(isPrime(p))
+        //Make sure they enter a prime number
+        while(!isPrime(p) || p == 0)
         {
+
             System.out.print(p);
-            System.out.println(" Is Prime") ;
-        }
-        else
-        {
-            System.out.print(p);
-            System.out.println(" Is not Prime") ;
+            System.out.println(" is not prime") ;
+            System.out.print("Please enter a prime number: ") ;
+            p = scan.nextInt();
         }
 
-    }
+        System.out.println(p + " is prime") ;
+        
+
+        //Take a and b input, if they enter 0 use rng from earlier.
+        System.out.print("Enter your \"a\" secret value (Enter 0 to randomize): ");
+        int a = scan.nextInt() ;
+        System.out.print("\nEnter your \"b\" secret value (Enter 0 to randomize): ");
+        int b = scan.nextInt() ;
+
+        if(a==0)
+        {
+            a = rand.nextInt(1000) ; //Change 1000 value to edit bounds
+        }
+        if(b==0)
+        {
+            b = rand.nextInt(1000) ;
+        }
+        scan.close() ; //Close scanner
+
+
+        //Repeat computing instructions
+        //Alice chooses a secret integer a (probably randomly), computes A=(g^a)%p, and sends A to Bob
+        //Bob chooses a secret integer b (probably randomly), computes B=(g^b)%p, and sends B to Alice
+
+
+        //Make A or B a big integer value of the long value of the double value of g^(a or b) % p
+        BigInteger A = BigInteger.valueOf(Double.valueOf((Math.pow(g, a))%p).longValue()) ;
+        BigInteger B = BigInteger.valueOf(Double.valueOf((Math.pow(g, b))%p).longValue()) ;
+
+}
 }
 
