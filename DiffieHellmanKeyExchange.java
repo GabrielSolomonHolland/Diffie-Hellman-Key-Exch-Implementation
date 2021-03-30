@@ -9,13 +9,12 @@ public class DiffieHellmanKeyExchange {
 
 /*
 Choose a prime number p and a base g that is a primitive root modulo p (see below).
-
+These numbers could be determined by shouting across a room for all we care
 Choose numbers:
 Prime number p = 97
 Prim root g = 17
 
 Calculate:
-These numbers could be determined by shouting across a room for all we care
 Alice chooses a secret integer a (probably randomly), computes A=(g^a)%p, and sends A to Bob
 Bob chooses a secret integer b (probably randomly), computes B=(g^b)%p, and sends B to Alice
 
@@ -25,10 +24,9 @@ Bob computes key=(A^b)%p
 
 Write a program that simulates the Diffie-Hellman KEX protocol described above. 
 Your program's output should verify that Alice's and Bob's keys match, and output all relevant variables.
-
-Finding g requires some math, and is not necessarily trivial.  I've put together the following code that may help you in your implementation
 */
 
+    //Make sure entered number is prime
     public static boolean isPrime(int p)
     {
         for (int i = 2; i <= p/2; ++i) 
@@ -49,16 +47,8 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
 
         System.out.print("Enter a prime number (p): ") ;
         int p = scan.nextInt() ;
-
-
-        //Give a constant for this, keep code for custom number commented out
-        BigInteger g = BigInteger.valueOf(17) ;
         
-        //System.out.print("Enter a primitive root: ") ;
-        //int g = scan.nextInt() ;
-        
-    
-        //Make sure they enter a prime number
+        //Make sure they enter a prime number and reject 0
         while(!isPrime(p) || p == 0)
         {
 
@@ -69,6 +59,13 @@ Finding g requires some math, and is not necessarily trivial.  I've put together
         }
 
         System.out.println(p + " is prime") ;
+
+
+        //Comment out constant for this, RNG a g value
+        //BigInteger g = BigInteger.valueOf(17) ;
+        int gTemp = rand.nextInt(9999) ;
+        BigInteger g = PrimitiveRoots.smallestPrimitiveRoot(BigInteger.valueOf(gTemp)) ;
+        System.out.println("\nSecret) g = " + g) ;
         
 
         //Take a and b input, if they enter 0 use rng from earlier.

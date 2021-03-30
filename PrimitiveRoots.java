@@ -56,6 +56,6 @@ public class PrimitiveRoots {
     public static void main(String [] args)
     {
         // "verified" with some known values from https://en.wikipedia.org/wiki/Primitive_root_modulo_n#Table_of_primitive_roots
-        System.out.println(smallestPrimitiveRoot(BigInteger.valueOf(71)));
+        System.out.println(smallestPrimitiveRoot(BigInteger.valueOf(83)));
     }
 }
