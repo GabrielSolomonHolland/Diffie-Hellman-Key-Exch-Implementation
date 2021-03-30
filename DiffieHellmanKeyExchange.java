@@ -1,13 +1,17 @@
+//Gabriel Solomon Holland
+
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Random ;
 
-//import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
 public class DiffieHellmanKeyExchange {
 
 
 /*
+
+Instructions:
+
 Choose a prime number p and a base g that is a primitive root modulo p (see below).
 These numbers could be determined by shouting across a room for all we care
 Choose numbers:
@@ -24,20 +28,6 @@ Write a program that simulates the Diffie-Hellman KEX protocol described above.
 Your program's output should verify that Alice's and Bob's keys match, and output all relevant variables.
 */
 
-    //Make sure entered number is prime
-    public static boolean isPrime(int p)
-    {
-        for (int i = 2; i <= p/2; ++i) 
-        {
-        // condition for nonprime number
-            if (p % i == 0) 
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static void main(String[]args)
     {
         Scanner scan = new Scanner(System.in); //make scanner
@@ -46,7 +36,7 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
         System.out.print("Enter a prime number (p): ") ;
         int p = scan.nextInt() ;
         
-        //Make sure they enter a prime number and reject 0
+        //Make sure they enter a prime number and reject 0 because it makes the code no fun
         while(!isPrime(p) || p == 0)
         {
 
@@ -61,32 +51,31 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
 
         //Comment out constant for this, RNG a g value
         //BigInteger g = BigInteger.valueOf(17) ;
+
+        //seed value for more rng
         int gTemp = rand.nextInt(999999) ;
 
         //Prime factors of the randomized value
         HashSet<BigInteger> gHS = (primeFactors(BigInteger.valueOf(gTemp))) ;
 
-        //make it an array so we can yoink out one of the factors
+        //make it an array so we can yoink out just one of the factors to use
         Object[] gAL = gHS.toArray() ;
 
-        //Make one of those values g after finding smallest prim root.
-        //What I did was make the hashset an array so I can pick one of the values to feed into the next portion
-        //Then I used a rng of the length of the returned array to pick one value.
-        //Typecasted that value from an object to an integer, then an integer to a biginteger because object can't go to biginteger
-        //Then took smallest prim root of that number to guarentee a primivitve root
-        //Split up for clarity
+        //Take one of those objects and then take the smallest prim root of it. Split into multiple parts for clarity. 
         BigInteger primeNum = (BigInteger)(gAL[rand.nextInt(gAL.length)]) ;
         BigInteger primRoot = smallestPrimitiveRoot(primeNum) ;
         BigInteger g = primRoot ;
         System.out.println("\ng = " + g) ;
         
 
-        //Take a and b input, if they enter 0 use rng from earlier.
+        //Take a and b input, if they enter 0 use rng.
         System.out.print("\nEnter your \"a\" secret value (Enter 0 to randomize): ");
         int a = scan.nextInt() ;
         System.out.print("\nEnter your \"b\" secret value (Enter 0 to randomize): ");
         int b = scan.nextInt() ;
 
+
+        //If they want rng
         if(a==0)
         {
             a = rand.nextInt(100000) ; //Change 100000 value to edit bounds
@@ -136,7 +125,7 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
 
 }
 
-//Import code from Dr. Eloe
+//Import code from Dr. Eloe for prime factors and smallest prim roots
 public static HashSet<BigInteger> primeFactors(BigInteger composite)
     {
         HashSet<BigInteger> pFactors = new HashSet<>();
@@ -188,7 +177,26 @@ public static HashSet<BigInteger> primeFactors(BigInteger composite)
         return BigInteger.valueOf(-1);
     }
 
+    
+        //Make checker so entered number is prime
+        public static boolean isPrime(int p)
+        {
+            for (int i = 2; i <= p/2; ++i) 
+            {
+            // condition for nonprime number
+                if (p % i == 0) 
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
 }
+
+
+//Gabriel Solomon Holland
+
 
 /*
 Write your code in one single source file (if you use Java) or use the Python gmpy notebooks and print to a .pdf.
@@ -315,4 +323,7 @@ Question 2: What values could an eavesdropper determine by listening on the inse
     using numbers under 100k they could maybe guess it but if a and b were much larger (int representations of strings) then there is
     no realistic way of getting the original value. 
 */
+
+
+//Gabriel Solomon Holland just throwing my name everywhere since this file is LONG
 
