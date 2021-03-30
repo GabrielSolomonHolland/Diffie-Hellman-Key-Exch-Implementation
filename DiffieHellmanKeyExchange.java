@@ -11,8 +11,6 @@ public class DiffieHellmanKeyExchange {
 Choose a prime number p and a base g that is a primitive root modulo p (see below).
 These numbers could be determined by shouting across a room for all we care
 Choose numbers:
-Prime number p = 97
-Prim root g = 17
 
 Calculate:
 Alice chooses a secret integer a (probably randomly), computes A=(g^a)%p, and sends A to Bob
@@ -80,7 +78,7 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
         BigInteger primeNum = (BigInteger)(gAL[rand.nextInt(gAL.length)]) ;
         BigInteger primRoot = smallestPrimitiveRoot(primeNum) ;
         BigInteger g = primRoot ;
-        System.out.println("\n(Secret) g = " + g) ;
+        System.out.println("\ng = " + g) ;
         
 
         //Take a and b input, if they enter 0 use rng from earlier.
@@ -201,9 +199,8 @@ in comments at the bottom of your code and the :
 
 1. How did you determine the secret integers for both Alice and Bob?  Were there limitations or bounds on how you chose the secret integers?
 
-What values could an eavesdropper determine by listening on the insecure channel?
-
-s this enough to recreate the entire secret key?
+2. What values could an eavesdropper determine by listening on the insecure channel?
+is this enough to recreate the entire secret key?
 
 
 Submit your java file or a printed pdf of your python notebook with the above specified information
@@ -216,7 +213,7 @@ Submit your java file or a printed pdf of your python notebook with the above sp
         Please enter a prime number: 337
         337 is prime
 
-        (Secret) g = 2
+        g = 2
 
         Enter your "a" secret value (Enter 0 to randomize): 0
 
@@ -230,6 +227,7 @@ Submit your java file or a printed pdf of your python notebook with the above sp
 
         B verified is 169
         A verified is 169
+        They equal each other
 
 Run#2
         Enter a prime number (p): 767
@@ -241,7 +239,7 @@ Run#2
         Please enter a prime number: 113
         113 is prime
 
-        (Secret) g = 2
+        g = 2
 
         Enter your "a" secret value (Enter 0 to randomize): 0
 
@@ -255,7 +253,66 @@ Run#2
 
         B verified is 28
         A verified is 28
+        They equal each other
 Run#3
-        
+    Enter a prime number (p): 9873
+    9873 is not prime
+    Please enter a prime number: 5677
+    5677 is not prime
+    Please enter a prime number: 99763
+    99763 is not prime
+    Please enter a prime number: 9011
+    9011 is prime
+
+    g = -1
+
+    Enter your "a" secret value (Enter 0 to randomize): 0
+
+    Enter your "b" secret value (Enter 0 to randomize): 0
+
+    (Secret) a = 22123
+    (Secret) b = 64669
+
+    Alice calulated 9010 for A
+    Bob calculated 9010 for B
+
+    B verified is 9010
+    A verified is 9010 
+    They equal each other
+
+Run#4 Because Run 3 gave me a g value of -1
+    Enter a prime number (p): 9241
+    9241 is prime
+
+    g = 2
+
+    Enter your "a" secret value (Enter 0 to randomize): 0
+
+    Enter your "b" secret value (Enter 0 to randomize): 0
+
+    (Secret) a = 4621
+    (Secret) b = 7800
+
+    Alice calulated 2 for A
+    Bob calculated 7025 for B
+
+    B verified is 7025
+    A verified is 7025
+    They equal each other
+
+
+Question 1: How did you determine the secret integers for both Alice and Bob?
+Were there limitations or bounds on how you chose the secret integers?
+
+    I let the user either enter a number or pick a random number under 100,000. I used 100k because I wanted a reasonably large number
+    but not something rediculus, I also left room to make it bigger or smaller if I wanted different results
+
+Question 2: What values could an eavesdropper determine by listening on the insecure channel? Is this enough to recreate the entire secret key?
+
+    The information publicly available: p, g. If they continued listening they could get A and B (A,B =/= a,b. Lowercase are secret).
+    They could not get the secret a or b value which is the message they are trying to steal. Even with the A, B, p, g they can't
+    reverse engineer the original a/b value out because there are multiple values that could fit, as is the nature of modulus. When we are
+    using numbers under 100k they could maybe guess it but if a and b were much larger (int representations of strings) then there is
+    no realistic way of getting the original value. 
 */
 
