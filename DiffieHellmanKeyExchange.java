@@ -63,9 +63,24 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
 
         //Comment out constant for this, RNG a g value
         //BigInteger g = BigInteger.valueOf(17) ;
-        int gTemp = rand.nextInt(9999) ;
-        BigInteger g = smallestPrimitiveRoot(BigInteger.valueOf(gTemp)) ;
-        System.out.println("\nSecret) g = " + g) ;
+        int gTemp = rand.nextInt(999999) ;
+
+        //Prime factors of the randomized value
+        HashSet<BigInteger> gHS = (primeFactors(BigInteger.valueOf(gTemp))) ;
+
+        //make it an array so we can yoink out one of the factors
+        Object[] gAL = gHS.toArray() ;
+
+        //Make one of those values g after finding smallest prim root.
+        //What I did was make the hashset an array so I can pick one of the values to feed into the next portion
+        //Then I used a rng of the length of the returned array to pick one value.
+        //Typecasted that value from an object to an integer, then an integer to a biginteger because object can't go to biginteger
+        //Then took smallest prim root of that number to guarentee a primivitve root
+        //Split up for clarity
+        BigInteger primeNum = (BigInteger)(gAL[rand.nextInt(gAL.length)]) ;
+        BigInteger primRoot = smallestPrimitiveRoot(primeNum) ;
+        BigInteger g = primRoot ;
+        System.out.println("\n(Secret) g = " + g) ;
         
 
         //Take a and b input, if they enter 0 use rng from earlier.
@@ -76,13 +91,13 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
 
         if(a==0)
         {
-            a = rand.nextInt(1000) ; //Change 1000 value to edit bounds
+            a = rand.nextInt(100000) ; //Change 100000 value to edit bounds
             System.out.println("\n(Secret) a = " + a) ;
         }
         if(b==0)
         {
-            b = rand.nextInt(1000) ;
-            System.out.println("\n(Secret) b = " + b) ;
+            b = rand.nextInt(100000) ;
+            System.out.println("(Secret) b = " + b) ;
         }
         scan.close() ; //Close scanner
 
@@ -100,8 +115,8 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
         BigInteger A = g.modPow(aCalcs, pCalcs) ;
         BigInteger B = g.modPow(bCalcs, pCalcs) ;
 
-        System.out.println("\n\nAlice: *Shouting* Hey I calculated " + A + " for A") ;
-        System.out.println("Bob: *Shouting* Yo I calculated " + B + " for B") ;
+        System.out.println("\nAlice calulated " + A + " for A") ;
+        System.out.println("Bob calculated " + B + " for B") ;
 
 
 
@@ -112,8 +127,8 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
         BigInteger verB = B.modPow(aCalcs, pCalcs) ; //Alice is verifying Bob's thing
         BigInteger verA = A.modPow(bCalcs, pCalcs) ; //Bob is verifying Alice's thing
 
-        System.out.println("\n\nAlice: B verified is " + verB) ;
-        System.out.println("Bob: A verified is " + verA) ;
+        System.out.println("\nB verified is " + verB) ;
+        System.out.println("A verified is " + verA) ;
 
 
         if(verB == verA) //If they are they same we're good!
@@ -193,5 +208,54 @@ s this enough to recreate the entire secret key?
 
 Submit your java file or a printed pdf of your python notebook with the above specified information
  (output of at least 3 runs, answers to the questions
+
+
+ Run#1: 
+        Enter a prime number (p): 334
+        334 is not prime
+        Please enter a prime number: 337
+        337 is prime
+
+        (Secret) g = 2
+
+        Enter your "a" secret value (Enter 0 to randomize): 0
+
+        Enter your "b" secret value (Enter 0 to randomize): 0
+
+        (Secret) a = 21349
+        (Secret) b = 91232
+
+        Alice calulated 104 for A
+        Bob calculated 256 for B
+
+        B verified is 169
+        A verified is 169
+
+Run#2
+        Enter a prime number (p): 767
+        767 is not prime
+        Please enter a prime number: 897
+        897 is not prime
+        Please enter a prime number: 567
+        567 is not prime
+        Please enter a prime number: 113
+        113 is prime
+
+        (Secret) g = 2
+
+        Enter your "a" secret value (Enter 0 to randomize): 0
+
+        Enter your "b" secret value (Enter 0 to randomize): 0
+
+        (Secret) a = 45112
+        (Secret) b = 29179
+
+        Alice calulated 16 for A
+        Bob calculated 8 for B
+
+        B verified is 28
+        A verified is 28
+Run#3
+        
 */
 
