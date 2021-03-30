@@ -1,5 +1,5 @@
 import java.math.BigInteger;
-//import java.util.HashSet;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Random ;
 
@@ -64,7 +64,7 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
         //Comment out constant for this, RNG a g value
         //BigInteger g = BigInteger.valueOf(17) ;
         int gTemp = rand.nextInt(9999) ;
-        BigInteger g = PrimitiveRoots.smallestPrimitiveRoot(BigInteger.valueOf(gTemp)) ;
+        BigInteger g = smallestPrimitiveRoot(BigInteger.valueOf(gTemp)) ;
         System.out.println("\nSecret) g = " + g) ;
         
 
@@ -122,5 +122,76 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
         }
 
 }
+
+//Import code from Dr. Eloe
+public static HashSet<BigInteger> primeFactors(BigInteger composite)
+    {
+        HashSet<BigInteger> pFactors = new HashSet<>();
+        int twopows = composite.getLowestSetBit();
+        if (twopows > 0)
+        {
+            pFactors.add(BigInteger.TWO);
+            composite = composite.shiftRight(twopows); // Shifting right is equivalent to a division by 2
+            // this is also fine; BigInts are immutable so we're not breaking anything
+        }
+        BigInteger currdivisor = BigInteger.valueOf(3);
+        while (!(composite.compareTo(currdivisor) <= 0))
+        {
+            while (composite.mod(currdivisor).equals(BigInteger.ZERO))
+            {
+                pFactors.add(currdivisor);
+                composite = composite.divide(currdivisor);
+            }
+            currdivisor = currdivisor.add(BigInteger.TWO); // this will sometimes not be prime, but the while above
+            // ensures we're OK!
+        }
+        // if composite is actually not composite, and not two...
+        if (composite.compareTo(BigInteger.TWO) > 0)
+            pFactors.add(composite);
+        return pFactors;
+    }
+    public static BigInteger smallestPrimitiveRoot(BigInteger n)
+    {
+        // Thanks to https://en.wikipedia.org/wiki/Primitive_root_modulo_n#Finding_primitive_roots
+        // Wiki is our best friend
+        // precondition: n is prime
+        assert n.isProbablePrime(7);
+        BigInteger phi_n = n.subtract(BigInteger.ONE);
+        HashSet<BigInteger> factors = primeFactors(phi_n);
+        BigInteger g = BigInteger.TWO;
+
+        while (g.compareTo(phi_n) <= 0)
+        {
+            boolean is_congruent_1 = false;
+            for (BigInteger factor: factors)
+            {
+                if (g.modPow(phi_n.divide(factor), n).equals(BigInteger.ONE))
+                    is_congruent_1 = true;
+            }
+            if (!is_congruent_1)
+                return g;
+            g = g.add(BigInteger.ONE);
+        }
+        return BigInteger.valueOf(-1);
+    }
+
 }
+
+/*
+Write your code in one single source file (if you use Java) or use the Python gmpy notebooks and print to a .pdf.
+In either comments at the bottom of your .java file or a Markdown cell in the Python Notebook put the output of 
+at least 3 runs with different values of p of your program (using next_prime with random starting points works 
+quite well for determining this, or just hard-code different values).  Additionally, answer the following questions
+in comments at the bottom of your code and the :
+
+1. How did you determine the secret integers for both Alice and Bob?  Were there limitations or bounds on how you chose the secret integers?
+
+What values could an eavesdropper determine by listening on the insecure channel?
+
+s this enough to recreate the entire secret key?
+
+
+Submit your java file or a printed pdf of your python notebook with the above specified information
+ (output of at least 3 runs, answers to the questions
+*/
 
