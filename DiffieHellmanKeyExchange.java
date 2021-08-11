@@ -94,6 +94,17 @@ Your program's output should verify that Alice's and Bob's keys match, and outpu
         //Bob chooses a secret integer b (probably randomly), computes B=(g^b)%p, and sends B to Alice
 
 
+
+        //Make a section to hardcode values for quick testing
+        //a = 13 ;
+        //b = 15 ;
+        //p = 23 ;
+        //g = BigInteger.valueOf(5) ;
+
+
+        //System.out.println("Hardcoded values for testing: ") ;
+        System.out.println("\np = " + p + "\ng = " + g) ;
+
         //Make variables bigIntegers for calculations
         BigInteger aCalcs = BigInteger.valueOf(a) ;
         BigInteger bCalcs = BigInteger.valueOf(b) ;
